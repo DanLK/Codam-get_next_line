@@ -6,7 +6,7 @@
 /*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/19 12:39:42 by dloustal      #+#    #+#                 */
-/*   Updated: 2024/12/23 11:13:18 by dloustal      ########   odam.nl         */
+/*   Updated: 2024/12/23 12:14:27 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 
 
 char	*find_line(int fd, char *read_buff, char *stash);
+
+char	*set_stash(char *line_buff);
 
 char	*get_next_line(int fd);
 
