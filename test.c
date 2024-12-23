@@ -5,7 +5,20 @@
 
 int	main(void)
 {
-	int	fd = open("test.txt", O_RDONLY);
-	printf("%s\n", get_next_line(fd));
+	char	*stash = "I already have some text";
+	char	*r_buff = (char *)malloc(BUFFER_SIZE * sizeof(char));
+	int		reps = 1;
+
+	if (!r_buff)
+		printf("%s\n", "Error allocating memory for the buffer");
+	else
+	{
+		int	fd = open("test.txt", O_RDONLY);
+		while (reps > 0)
+		{
+			printf("%s", get_next_line(fd));
+			reps--;
+		}
+	}
 	return (0);
 }
