@@ -6,7 +6,7 @@
 /*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/19 12:39:42 by dloustal      #+#    #+#                 */
-/*   Updated: 2024/12/23 12:14:27 by dloustal      ########   odam.nl         */
+/*   Updated: 2024/12/24 13:43:14 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,13 @@
 // }		t_node;
 
 
-char	*find_line(int fd, char *read_buff, char *stash);
+char	*find_line_(int fd, char *read_buff, char *stash);
 
-char	*set_stash(char *line_buff);
+char	*find_line_cpy(int fd, char *read_buff, char *stash);
 
-char	*get_next_line(int fd);
+char	*set_stash_(char *line_buff);
+
+char	*get_next_line_(int fd);
 
 // Utils
 

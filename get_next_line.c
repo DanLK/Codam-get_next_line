@@ -6,7 +6,7 @@
 /*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/20 10:20:07 by dloustal      #+#    #+#                 */
-/*   Updated: 2024/12/23 17:36:26 by dloustal      ########   odam.nl         */
+/*   Updated: 2024/12/24 13:43:16 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-
-
-char	*find_line(int fd, char *read_buff, char *stash)
-{
-	ssize_t	result;
-	char	*line;
-
-	if (!stash)
-		return (NULL);
-	if (ft_strlen(stash) != 0)
-	{
-		if (ft_strchr(stash, '\n'))
-			return (ft_strdup(stash));
-		line = ft_strdup(stash);
-	}
-	else
-		line = ft_strdup("");
-	result = 1;
-	while (result > 0)
-	{
-		result = read(fd, read_buff, BUFFER_SIZE);
-		if (result == -1)
-		{
-			free(line);
-			line = NULL;
-			return (NULL);
-		}
-		else if (result == 0)
-			break ;
-		read_buff[result] = '\0';
-		line = ft_strjoin(line, read_buff);
-		if (ft_strchr(line, '\n'))
-		break ; 
-	}
-	if (ft_strlen(line) == 0)
-	{
-		free(line);
-		return (NULL);
-	}
-	return (line);
-}
 
 char	*find_line_cpy(int fd, char *read_buff, char *stash)
 {
@@ -64,7 +23,7 @@ char	*find_line_cpy(int fd, char *read_buff, char *stash)
 	result = 1;
 	while (result > 0)
 	{
-		result = read(fd, read_buff, BUFFER_SIZE + 1);
+		result = read(fd, read_buff, BUFFER_SIZE);
 		if (result == -1)
 		{
 			free(tmp_line);
@@ -80,7 +39,7 @@ char	*find_line_cpy(int fd, char *read_buff, char *stash)
 		free(tmp_line);
 		tmp_line = NULL;
 		if (ft_strchr(stash, '\n'))
-		break ;
+			break ;
 	}
 	return (stash);
 }
@@ -106,7 +65,42 @@ char	*set_stash(char *line_buff)
 	line_buff[i + 1] = '\0';
 	return (stash);
 }
+/* Reads and writes on the buffer until it sees a \n 
+It returns the stash with the new content written
+-
+- The read content (plus the contents of the stash) is 
+stored in a temporary variable that can later be freed
+- It always reads content, if possible */
+char *find_line(int fd, char *read_buff, char *stash)
+{
+	ssize_t	result;
+	char	*tmp_line;
 
+	result = 1;
+	while (result > 0)
+	{
+		result = read(fd, read_buff, BUFFER_SIZE);
+		if (result == -1)
+		{
+			free(tmp_line);
+			tmp_line = NULL;
+			return (NULL);
+		}
+		else if (result == 0)
+			break ;
+		read_buff[result] = '\0';
+		tmp_line = ft_strdup(stash);
+		stash = ft_strjoin(tmp_line, read_buff);
+		free(tmp_line);
+		tmp_line = NULL;
+		if (ft_strchr(stash, '\n'))
+			break ;
+	}
+	return (stash);
+}
+
+/* The read buffer will read BUFFER_SIZE characters, and will terminate the string,
+to properly join it with the stash */
 char	*get_next_line(int fd)
 {
 	char		*read_buff;
@@ -119,12 +113,13 @@ char	*get_next_line(int fd)
 	if (!read_buff)
 		return (NULL);
 	line_buff = find_line(fd, read_buff, stash);
+	printf("Line buff: %s\n", line_buff);
+	printf("Stash: %s\n", stash);
 	free(read_buff);
 	read_buff = NULL;
 	if (!line_buff)
 	{
 		free(line_buff);
-		free(stash); //?? Do I need this?
 		return (NULL);
 	}
 	stash = set_stash(line_buff);
