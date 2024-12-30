@@ -6,7 +6,7 @@
 /*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 19:15:06 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/30 13:57:41 by dloustal      ########   odam.nl         */
+/*   Updated: 2024/12/30 14:07:48 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_next_line(int fd);
 
 void	read_to_list(int fd, t_list **stash);
 
-char	*get_line(t_list *stash);
+char	*get_current_line(t_list *stash);
 
 void	copy_line(t_list *stash, char *line);
 
