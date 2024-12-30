@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   test.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <marvin@42.fr>                      +#+                     */
+/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 22:32:42 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/28 20:19:57 by dloustalot    ########   odam.nl         */
+/*   Updated: 2024/12/30 13:48:30 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,22 @@ int	main(void){
 	// 	node = node->next;
 	// }
 	
-	int	reps = 14;
-	while (reps-- > 0)
+	// int	reps = 15;
+	char	*result= "";
+	while (result)
 	{
-		printf("Line-%s", get_next_line(fd));
+		result = get_next_line(fd);
+		if (result)
+			printf("Line-%s", result);
+		else
+			printf("\nNULL");
 	}
+
+	// int	len;
+	// t_list	*node;
+
+	// node = ft_lstnew("s will bring aboard.");
+	// len = find_char(node, '\n');
+	// printf("Len%d\n", len);
 	return (0);
 }

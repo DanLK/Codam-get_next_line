@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   get_next_line.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <marvin@42.fr>                      +#+                     */
+/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 19:17:57 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/28 20:13:46 by dloustalot    ########   odam.nl         */
+/*   Updated: 2024/12/30 13:56:52 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	read_to_list(int fd, t_list **stash)
 
 	if (!stash)
 		return ;
-	while (!find_char(*stash, '\n'))
+	while (!find_new_line(*stash, 'f'))
 	{
 		buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
@@ -74,7 +74,7 @@ char	*get_line(t_list *stash)
 
 	if (!stash)
 		return (NULL);
-	line_len = find_char(stash, '\n');
+	line_len = find_new_line(stash, 'c');
 	line = (char *)malloc((line_len + 1) * sizeof(char));
 	if (!line)
 		return (NULL);
@@ -127,8 +127,10 @@ void	set_list(t_list **stash)
 	j = 0;
 	while (last_node->content[i] && last_node->content[i] != '\n')
 		i++;
-	while (last_node->content[++i])
-		content[j++] = last_node->content[i];
+	if (last_node->content[i] == '\n')
+		i++;
+	while (last_node->content[i])
+		content[j++] = last_node->content[i++];
 	content[j] = '\0';
 	new_node->content = content;
 	new_node->next = NULL;

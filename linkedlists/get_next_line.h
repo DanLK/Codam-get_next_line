@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   get_next_line.h                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <marvin@42.fr>                      +#+                     */
+/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 19:15:06 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/28 19:39:21 by dloustalot    ########   odam.nl         */
+/*   Updated: 2024/12/30 13:57:41 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,14 @@ t_list	*ft_lstnew(char *content);
 
 void	ft_lstadd_back(t_list **lst, t_list *new_node);
 
-int		find_char(t_list *node, char c);
+int		find_new_line(t_list *node, char mode);
 
 t_list	*ft_lstlast(t_list *lst);
 
 void	clear_list(t_list **stash, t_list *node, char *content);
+
+// For debugging
+
+// void	pretty_print(t_list *stash);
 
 #endif

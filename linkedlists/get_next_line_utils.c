@@ -3,15 +3,16 @@
 /*                                                        ::::::::            */
 /*   get_next_line_utils.c                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <marvin@42.fr>                      +#+                     */
+/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 21:53:10 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/28 19:39:05 by dloustalot    ########   odam.nl         */
+/*   Updated: 2024/12/30 13:58:08 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 t_list	*ft_lstnew(char *content)
 {
@@ -40,7 +41,10 @@ void	ft_lstadd_back(t_list **lst, t_list *new_node)
 	last->next = new_node;
 }
 
-int	find_char(t_list *node, char c)
+/* Finds the char '\n' in two modes, f for find, in which it returns 0
+if the new line char is not found; and c for count, in which it returns
+the length of the line (up to the '\n' character) */
+int	find_new_line(t_list *node, char mode)
 {
 	int	i;
 	int	count;
@@ -53,14 +57,19 @@ int	find_char(t_list *node, char c)
 		i = 0;
 		while (node->content[i])
 		{
-			if (node->content[i] == c)
+			if (node->content[i] == '\n')
 				return (count);
 			i++;
 			count++;
 		}
 		node = node->next;
 	}
-	return (0);
+	if (mode == 'f')
+		return (0);
+	else if (mode == 'c')
+		return (count);
+	else
+		return (-1);
 }
 
 t_list	*ft_lstlast(t_list *lst)
@@ -96,5 +105,17 @@ void	clear_list(t_list **stash, t_list *node, char *content)
 	{
 		free(node);
 		free(content);
+		*stash = NULL;
 	}
 }
+// void	pretty_print(t_list *stash)
+// {
+// 	printf("Current stash:\n\n");
+// 	while (stash)
+// 	{
+// 		printf("%s\n", stash->content);
+// 		printf("--\n");
+// 		stash = stash->next;
+// 	}
+// 	printf("\nEnd of stash\n");
+// }
