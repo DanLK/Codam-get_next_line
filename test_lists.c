@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   test.c                                             :+:    :+:            */
+/*   test_lists.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
+/*   By: dloustal <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 22:32:42 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/30 13:48:30 by dloustal      ########   odam.nl         */
+/*   Updated: 2024/12/31 15:50:38 by dloustalot    ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int	main(void){
 	int	fd = open("../test.txt", O_RDONLY);
+	// int	fd2 = open("../test_nwl.txt", O_RDONLY);
 	// t_list	**stash;
 	// t_list	*node = NULL;
 	// char	*line;
@@ -39,16 +41,16 @@ int	main(void){
 	// }
 	
 	// int	reps = 15;
-	char	*result= "";
+	char	*result;
+	result = "";
+
 	while (result)
 	{
 		result = get_next_line(fd);
-		if (result)
-			printf("Line-%s", result);
-		else
-			printf("\nNULL");
-	}
 
+		printf("%s", result);
+		
+	}
 	// int	len;
 	// t_list	*node;
 

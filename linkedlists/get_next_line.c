@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   get_next_line.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
+/*   By: dloustal <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 19:17:57 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/31 14:28:52 by dloustal      ########   odam.nl         */
+/*   Updated: 2024/12/31 17:02:54 by dloustalot    ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	*get_next_line(int fd)
 	// 	if (stash == NULL)
 	// 		return (free(str), NULL);
 	// }
-
 	read_to_list(fd, &stash);
 	if (!stash)
 		return (NULL);

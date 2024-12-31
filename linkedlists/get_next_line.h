@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   get_next_line.h                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
+/*   By: dloustal <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 19:15:06 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/30 14:07:48 by dloustal      ########   odam.nl         */
+/*   Updated: 2024/12/31 16:32:46 by dloustalot    ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ void	clear_list(t_list **stash, t_list *node, char *content);
 
 // For debugging
 
-// void	pretty_print(t_list *stash);
+void	pretty_print(t_list *stash);
 
 #endif

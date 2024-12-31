@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   get_next_line_utils.c                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
+/*   By: dloustal <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 21:53:10 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/31 14:12:27 by dloustal      ########   odam.nl         */
+/*   Updated: 2024/12/31 16:32:47 by dloustalot    ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_list	*ft_lstnew(char *content)
 
 	new = (t_list *)malloc(sizeof(t_list));
 	if (!new)
-		return (new);
+		return (NULL);
 	new->content = (char *)content;
 	new->next = 0;
 	return (new);
@@ -49,7 +49,7 @@ int	find_new_line(t_list *node, char mode)
 	int	i;
 	int	count;
 
-	count = 1;
+	count = 0;
 	if (!node)
 		return (0);
 	while (node)
@@ -58,7 +58,7 @@ int	find_new_line(t_list *node, char mode)
 		while (node->content[i])
 		{
 			if (node->content[i] == '\n')
-				return (count);
+				return (++count);
 			i++;
 			count++;
 		}
@@ -110,14 +110,14 @@ void	clear_list(t_list **stash, t_list *node, char *content)
 		*stash = NULL;
 	}
 }
-// void	pretty_print(t_list *stash)
-// {
-// 	printf("Current stash:\n\n");
-// 	while (stash)
-// 	{
-// 		printf("%s\n", stash->content);
-// 		printf("--\n");
-// 		stash = stash->next;
-// 	}
-// 	printf("\nEnd of stash\n");
-// }
+void	pretty_print(t_list *stash)
+{
+	printf("Current stash:\n\n");
+	while (stash)
+	{
+		printf("%s\n", stash->content);
+		printf("--\n");
+		stash = stash->next;
+	}
+	printf("\nEnd of stash\n");
+}
