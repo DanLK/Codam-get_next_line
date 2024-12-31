@@ -6,7 +6,7 @@
 /*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 19:17:57 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/30 14:07:50 by dloustal      ########   odam.nl         */
+/*   Updated: 2024/12/31 14:28:52 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdio.h>
 
 void	read_to_list(int fd, t_list **stash);
-char	*get_line(t_list *stash);
+char	*get_current_line(t_list *stash);
 void	copy_line(t_list *stash, char *line);
 void	set_list(t_list **stash);
 
@@ -27,12 +27,25 @@ char	*get_next_line(int fd)
 	static t_list	*stash = NULL;
 	char			*line;
 
-	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE < 1 /* || read(fd, NULL, 0) < 0 */)
 		return (NULL);
+	// if (stash == NULL)
+	// {
+	// 	char *str = malloc(1);
+	// 	if (str == NULL)
+	// 		return (NULL);
+	// 	*str = '\0';
+	// 	stash = ft_lstnew(str);
+	// 	if (stash == NULL)
+	// 		return (free(str), NULL);
+	// }
+
 	read_to_list(fd, &stash);
 	if (!stash)
 		return (NULL);
 	line = get_current_line(stash);
+	if (line == NULL)
+		return (clear_list(&stash, NULL, NULL), NULL);
 	set_list(&stash);
 	return (line);
 }
@@ -45,23 +58,25 @@ void	read_to_list(int fd, t_list **stash)
 	t_list		*new_node;
 	char		*buffer;
 
-	if (!stash)
+	if (stash == NULL)
 		return ;
 	while (!find_new_line(*stash, 'f'))
 	{
-		buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
-			return ;
+			return (clear_list(stash, NULL, NULL));
 		result = read(fd, buffer, BUFFER_SIZE);
 		if (result <= 0)
 		{
 			free(buffer);
+			if (result < 0)
+				clear_list(stash, NULL, NULL);
 			return ;
 		}
 		buffer[result] = '\0';
 		new_node = ft_lstnew(buffer);
 		if (!new_node)
-			return ;
+			return (clear_list(stash, NULL, buffer));
 		ft_lstadd_back(stash, new_node);
 	}
 }
@@ -72,8 +87,8 @@ char	*get_current_line(t_list *stash)
 	char	*line;
 	int		line_len;
 
-	if (!stash)
-		return (NULL);
+/* 	if (!stash)
+		return (NULL); */
 	line_len = find_new_line(stash, 'c');
 	line = (char *)malloc((line_len + 1) * sizeof(char));
 	if (!line)
@@ -121,7 +136,7 @@ void	set_list(t_list **stash)
 	new_node = (t_list *)malloc(sizeof(t_list));
 	content = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!new_node || !content)
-		return ;
+		return (free(new_node), free(content), clear_list(stash, NULL, NULL));
 	last_node = ft_lstlast(*stash);
 	i = 0;
 	j = 0;
