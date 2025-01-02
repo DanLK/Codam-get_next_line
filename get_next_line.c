@@ -3,42 +3,29 @@
 /*                                                        ::::::::            */
 /*   get_next_line.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <marvin@42.fr>                      +#+                     */
+/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 19:17:57 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/31 17:02:54 by dloustalot    ########   odam.nl         */
+/*   Updated: 2025/01/02 17:54:59 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
-void	read_to_list(int fd, t_list **stash);
-char	*get_current_line(t_list *stash);
-void	copy_line(t_list *stash, char *line);
-void	set_list(t_list **stash);
+void	read_to_list(int fd, t_list **list);
+char	*get_current_line(t_list *head);
+void	copy_line(t_list *head, char *line);
+void	set_list(t_list **list);
 
-/* Reads from the file, puts it in a list until it finds a \n
-and then extracts the line, and cleans the list */
 char	*get_next_line(int fd)
 {
 	static t_list	*stash = NULL;
 	char			*line;
 
-	if (fd < 0 || BUFFER_SIZE < 1 /* || read(fd, NULL, 0) < 0 */)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	// if (stash == NULL)
-	// {
-	// 	char *str = malloc(1);
-	// 	if (str == NULL)
-	// 		return (NULL);
-	// 	*str = '\0';
-	// 	stash = ft_lstnew(str);
-	// 	if (stash == NULL)
-	// 		return (free(str), NULL);
-	// }
 	read_to_list(fd, &stash);
 	if (!stash)
 		return (NULL);
@@ -51,80 +38,106 @@ char	*get_next_line(int fd)
 
 /* Reads from the file until it sees a \n
 and stores every "iteration" of read on a node of the list  */
-void	read_to_list(int fd, t_list **stash)
+void	read_to_list(int fd, t_list **list)
 {
 	ssize_t		result;
 	t_list		*new_node;
 	char		*buffer;
 
-	if (stash == NULL)
+	if (list == NULL)
 		return ;
-	while (!find_new_line(*stash, 'f'))
+	while (!find_new_line(*list, 'f'))
 	{
 		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
-			return (clear_list(stash, NULL, NULL));
+			return (clear_list(list, NULL, NULL));
 		result = read(fd, buffer, BUFFER_SIZE);
 		if (result <= 0)
 		{
 			free(buffer);
 			if (result < 0)
-				clear_list(stash, NULL, NULL);
+				clear_list(list, NULL, NULL);
 			return ;
 		}
 		buffer[result] = '\0';
 		new_node = ft_lstnew(buffer);
 		if (!new_node)
-			return (clear_list(stash, NULL, buffer));
-		ft_lstadd_back(stash, new_node);
+			return (clear_list(list, NULL, buffer));
+		ft_lstadd_back(list, new_node);
 	}
 }
 
-/* Reads the list and returns the contents until it finds a \n */
-char	*get_current_line(t_list *stash)
+// void	new_read(int fd, t_list **stash)
+// {
+// 	ssize_t	result;
+// 	char	*buffer;
+// 	t_list	*new_node;
+// 	char	*buff_copy;
+
+// 	if (stash == NULL)
+// 		return ;
+// 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+// 	if (!buffer)
+// 		return (clear_list(stash, NULL, NULL));
+// 	while (!find_new_line(*stash, 'f'))
+// 	{
+// 		result = read(fd, buffer, BUFFER_SIZE);
+// 		if (result == 0)
+// 			return (free(buffer));
+// 		if (result < 0)
+// 			return (clear_list(stash, NULL, buffer));
+// 		buffer[result] = '\0';
+// 		buff_copy = strdup(buffer);
+// 		new_node = ft_lstnew(buff_copy);
+// 		if (!new_node)
+// 			return (clear_list(stash, NULL, buffer));
+// 		ft_lstadd_back(stash, new_node);
+// 	}
+// 	free(buff_copy);
+// }
+
+char	*get_current_line(t_list *head)
 {
 	char	*line;
 	int		line_len;
 
-/* 	if (!stash)
-		return (NULL); */
-	line_len = find_new_line(stash, 'c');
+	if (!head)
+		return (NULL);
+	line_len = find_new_line(head, 'c');
 	line = (char *)malloc((line_len + 1) * sizeof(char));
 	if (!line)
 		return (NULL);
-	copy_line(stash, line);
+	copy_line(head, line);
 	return (line);
 }
 
-/* Copies the contents of the list up to \n into the line */
-void	copy_line(t_list *stash, char *line)
+void	copy_line(t_list *head, char *line)
 {
 	int	i;
 	int	j;
 
-	if (!stash || !line)
+	if (!head || !line)
 		return ;
 	i = 0;
-	while (stash)
+	while (head)
 	{
 		j = 0;
-		while (stash->content[j])
+		while (head->content[j])
 		{
-			line[i++] = stash->content[j];
-			if (stash->content[j] == '\n')
+			line[i++] = head->content[j];
+			if (head->content[j] == '\n')
 			{
 				line[i] = '\0';
 				return ;
 			}
 			j++;
 		}
-		stash = stash->next;
+		head = head->next;
 	}
 	line[i] = '\0';
 }
 
-/* Clears the list and keeps only the node with relevant content */
-void	set_list(t_list **stash)
+void	set_list(t_list **list)
 {
 	t_list	*new_node;
 	t_list	*last_node;
@@ -135,8 +148,8 @@ void	set_list(t_list **stash)
 	new_node = (t_list *)malloc(sizeof(t_list));
 	content = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!new_node || !content)
-		return (free(new_node), free(content), clear_list(stash, NULL, NULL));
-	last_node = ft_lstlast(*stash);
+		return (free(new_node), free(content), clear_list(list, NULL, NULL));
+	last_node = ft_lstlast(*list);
 	i = 0;
 	j = 0;
 	while (last_node->content[i] && last_node->content[i] != '\n')
@@ -148,5 +161,5 @@ void	set_list(t_list **stash)
 	content[j] = '\0';
 	new_node->content = content;
 	new_node->next = NULL;
-	clear_list(stash, new_node, content);
+	clear_list(list, new_node, content);
 }

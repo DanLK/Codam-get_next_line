@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/12/19 12:39:42 by dloustal      #+#    #+#                 */
-/*   Updated: 2024/12/24 13:43:14 by dloustal      ########   odam.nl         */
+/*   Created: 2024/12/26 19:15:06 by dloustalot    #+#    #+#                 */
+/*   Updated: 2025/01/02 17:44:46 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,27 @@
 
 # endif
 
-#include <stdlib.h>
+typedef struct s_list
+{
+	char			*content;
+	struct s_list	*next;
+}	t_list;
 
-// typedef struct chunk
-// {
-// 	char			*content;
-// 	struct chunk	*next;
-// }		t_node;
-
-
-char	*find_line_(int fd, char *read_buff, char *stash);
-
-char	*find_line_cpy(int fd, char *read_buff, char *stash);
-
-char	*set_stash_(char *line_buff);
-
-char	*get_next_line_(int fd);
+char	*get_next_line(int fd);
+void	read_to_list(int fd, t_list **list);
+char	*get_current_line(t_list *head);
+void	copy_line(t_list *head, char *line);
+void	set_list(t_list **list);
 
 // Utils
 
-size_t	ft_strlen(const char *s);
+t_list	*ft_lstnew(char *content);
+void	ft_lstadd_back(t_list **lst, t_list *new_node);
+int		find_new_line(t_list *node, char mode);
+t_list	*ft_lstlast(t_list *lst);
+void	clear_list(t_list **list, t_list *node, char *buffer);
 
-char	*ft_strdup(const char *s);
-
-char	*ft_strchr(const char *s, int c);
-
-char	*ft_strjoin(char const *s1, char const *s2);
-
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+// For debugging
+// void	pretty_print(t_list *stash);
 
 #endif

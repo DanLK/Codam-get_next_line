@@ -3,16 +3,15 @@
 /*                                                        ::::::::            */
 /*   get_next_line_utils.c                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <marvin@42.fr>                      +#+                     */
+/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 21:53:10 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/31 16:32:47 by dloustalot    ########   odam.nl         */
+/*   Updated: 2025/01/02 17:45:59 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 t_list	*ft_lstnew(char *content)
 {
@@ -41,9 +40,21 @@ void	ft_lstadd_back(t_list **lst, t_list *new_node)
 	last->next = new_node;
 }
 
-/* Finds the char '\n' in two modes, f for find, in which it returns 0
-if the new line char is not found; and c for count, in which it returns
-the length of the line (up to the '\n' character) */
+t_list	*ft_lstlast(t_list *lst)
+{
+	t_list	*temp;
+
+	if (!lst)
+		return (NULL);
+	temp = lst;
+	while (temp->next)
+		temp = temp->next;
+	return (temp);
+}
+
+/* Traverses the list until it finds the character '\n'
+If not found, in mode 'f' for find, it returns 0; and in mode 'c', for 
+count, it returns the total number of characters read */
 int	find_new_line(t_list *node, char mode)
 {
 	int	i;
@@ -72,26 +83,17 @@ int	find_new_line(t_list *node, char mode)
 		return (-1);
 }
 
-t_list	*ft_lstlast(t_list *lst)
-{
-	t_list	*temp;
-
-	if (!lst)
-		return (NULL);
-	temp = lst;
-	while (temp->next)
-		temp = temp->next;
-	return (temp);
-}
-
-void	clear_list(t_list **stash, t_list *node, char *content)
+/* Clears the list. If there is a new node with relevant
+information, it makes the list point to the new node. Otherwise it 
+frres the node and the relevant buffer. */
+void	clear_list(t_list **list, t_list *node, char *buffer)
 {
 	t_list	*to_clear;
 	t_list	*temp;
 
-	if (stash == NULL)
+	if (list == NULL)
 		return ;
-	to_clear = *stash;
+	to_clear = *list;
 	while (to_clear)
 	{
 		temp = to_clear->next;
@@ -101,23 +103,23 @@ void	clear_list(t_list **stash, t_list *node, char *content)
 	}
 	if (node != NULL && node->content != NULL && node->content[0])
 	{
-		*stash = node;
+		*list = node;
 	}
 	else
 	{
 		free(node);
-		free(content);
-		*stash = NULL;
+		free(buffer);
+		*list = NULL;
 	}
 }
-void	pretty_print(t_list *stash)
-{
-	printf("Current stash:\n\n");
-	while (stash)
-	{
-		printf("%s\n", stash->content);
-		printf("--\n");
-		stash = stash->next;
-	}
-	printf("\nEnd of stash\n");
-}
+// void	pretty_print(t_list *stash)
+// {
+// 	printf("Current stash:\n\n");
+// 	while (stash)
+// 	{
+// 		printf("%s\n", stash->content);
+// 		printf("--\n");
+// 		stash = stash->next;
+// 	}
+// 	printf("\nEnd of stash\n");
+// }

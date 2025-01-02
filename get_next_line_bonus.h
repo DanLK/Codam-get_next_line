@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_next_line.h                                    :+:    :+:            */
+/*   get_next_line_bonus.h                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dloustal <marvin@42.fr>                      +#+                     */
+/*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/12/26 19:15:06 by dloustalot    #+#    #+#                 */
-/*   Updated: 2024/12/31 16:32:46 by dloustalot    ########   odam.nl         */
+/*   Created: 2025/01/02 15:04:59 by dloustal      #+#    #+#                 */
+/*   Updated: 2025/01/02 17:21:38 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
 
-# define GET_NEXT_LINE_H
+# define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
 
@@ -27,29 +27,17 @@ typedef struct s_list
 }	t_list;
 
 char	*get_next_line(int fd);
+void	read_to_list(int fd, t_list **list);
+char	*get_current_line(t_list *head);
+void	copy_line(t_list *head, char *line);
+void	set_list(t_list **list);
 
-void	read_to_list(int fd, t_list **stash);
-
-char	*get_current_line(t_list *stash);
-
-void	copy_line(t_list *stash, char *line);
-
-void	set_list(t_list **stash);
-
-// Utils
+// UTILS
 
 t_list	*ft_lstnew(char *content);
-
 void	ft_lstadd_back(t_list **lst, t_list *new_node);
-
-int		find_new_line(t_list *node, char mode);
-
 t_list	*ft_lstlast(t_list *lst);
-
-void	clear_list(t_list **stash, t_list *node, char *content);
-
-// For debugging
-
-void	pretty_print(t_list *stash);
+int		find_new_line(t_list *node, char mode);
+void	clear_list(t_list **list, t_list *node, char *content);
 
 #endif
