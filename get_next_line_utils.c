@@ -6,7 +6,7 @@
 /*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 21:53:10 by dloustalot    #+#    #+#                 */
-/*   Updated: 2025/01/02 17:45:59 by dloustal      ########   odam.nl         */
+/*   Updated: 2025/01/03 11:21:49 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	find_new_line(t_list *node, char mode)
 
 /* Clears the list. If there is a new node with relevant
 information, it makes the list point to the new node. Otherwise it 
-frres the node and the relevant buffer. */
+frees the node and the relevant buffer. */
 void	clear_list(t_list **list, t_list *node, char *buffer)
 {
 	t_list	*to_clear;

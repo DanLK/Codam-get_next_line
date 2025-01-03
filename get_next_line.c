@@ -6,7 +6,7 @@
 /*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/26 19:17:57 by dloustalot    #+#    #+#                 */
-/*   Updated: 2025/01/02 17:54:59 by dloustal      ########   odam.nl         */
+/*   Updated: 2025/01/03 11:21:01 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/* Reads from the file until it sees a \n
-and stores every "iteration" of read on a node of the list  */
+/* Reads content until a new line and stores in stash */
 void	read_to_list(int fd, t_list **list)
 {
 	ssize_t		result;
@@ -67,35 +66,7 @@ void	read_to_list(int fd, t_list **list)
 	}
 }
 
-// void	new_read(int fd, t_list **stash)
-// {
-// 	ssize_t	result;
-// 	char	*buffer;
-// 	t_list	*new_node;
-// 	char	*buff_copy;
-
-// 	if (stash == NULL)
-// 		return ;
-// 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-// 	if (!buffer)
-// 		return (clear_list(stash, NULL, NULL));
-// 	while (!find_new_line(*stash, 'f'))
-// 	{
-// 		result = read(fd, buffer, BUFFER_SIZE);
-// 		if (result == 0)
-// 			return (free(buffer));
-// 		if (result < 0)
-// 			return (clear_list(stash, NULL, buffer));
-// 		buffer[result] = '\0';
-// 		buff_copy = strdup(buffer);
-// 		new_node = ft_lstnew(buff_copy);
-// 		if (!new_node)
-// 			return (clear_list(stash, NULL, buffer));
-// 		ft_lstadd_back(stash, new_node);
-// 	}
-// 	free(buff_copy);
-// }
-
+/* Reads stash and gets the first line */
 char	*get_current_line(t_list *head)
 {
 	char	*line;
@@ -137,6 +108,7 @@ void	copy_line(t_list *head, char *line)
 	line[i] = '\0';
 }
 
+/* Sets the stash for next iteration */
 void	set_list(t_list **list)
 {
 	t_list	*new_node;

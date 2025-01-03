@@ -6,7 +6,7 @@
 /*   By: dloustal <dloustal@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/01/02 15:03:55 by dloustal      #+#    #+#                 */
-/*   Updated: 2025/01/02 17:25:26 by dloustal      ########   odam.nl         */
+/*   Updated: 2025/01/03 11:10:30 by dloustal      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	set_list(t_list **list);
 
 char	*get_next_line(int fd)
 {
-	static t_list	*stash[1000];
+	static t_list	*stash[1024];
 	char			*line;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
